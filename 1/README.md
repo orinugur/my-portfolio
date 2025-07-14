@@ -44,3 +44,11 @@ A:
 - package.json의 devDependencies에 "@vitejs/plugin-react"를 추가하고, `npm install`로 의존성을 설치했습니다.
 - index.html의 entry point를 `/src/main.ts`에서 `/src/main.tsx`로 수정했습니다.
 - 이후 `npm run dev`로 서버가 정상적으로 기동됨을 확인했습니다.
+
+---
+
+Q: 깃허브 페이지 배포 시 "Vite + TS"만 보이고, 실제 React 앱이 렌더링되지 않습니다.
+
+A:  
+- index.html의 mount 타겟이 `<div id="app"></div>`로 되어 있었으나, main.tsx에서 `document.getElementById("root")`로 렌더링하고 있어 불일치가 발생했습니다.
+- index.html의 div id를 "root"로 수정하여 React 앱이 정상적으로 렌더링되도록 반영했습니다.
