@@ -119,3 +119,24 @@ README.md에 두 방식의 차이와 /docs 방식 적용법을 안내했습니�
 5. push 후 https://orinugur.github.io/my-portfolio123/o/ 에서 확인
 
 ※ gh-pages 브랜치 없이 main/docs 폴더만으로도 배포가 가능합니다.
+---
+
+## 여러 프로젝트를 하나의 리포지토리에서 각각 하위폴더로 배포하는 방법
+
+1. 각 프로젝트의 `package.json`의 homepage를  
+   `"https://orinugur.github.io/my-portfolio123/폴더명"`  
+   으로 지정 (예: o, 1, 2 등)
+2. 각 프로젝트 폴더에서  
+   ```
+   npm run build
+   ```
+3. 생성된 build 폴더의 모든 파일을  
+   해당 프로젝트 폴더(o, 1, 2 등)에 복사  
+   ```
+   xcopy /E /I /Y build\* o
+   ```
+4. git add, commit, push
+5. https://orinugur.github.io/my-portfolio123/o/ 등에서 각각 접근 가능
+
+※ 각 프로젝트별로 homepage와 복사 경로만 다르게 하면  
+여러 SPA를 하나의 리포지토리에서 독립적으로 배포할 수 있습니다.
