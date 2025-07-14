@@ -172,3 +172,12 @@ A: o 폴더에서 homepage를 "https://orinugur.github.io/my-portfolio123/o"로 
 npm run build 후 build 폴더의 모든 파일을 o 폴더(자기 자신)에 복사하면  
 https://orinugur.github.io/my-portfolio123/o/ 에서 정상적으로 SPA가 동작합니다.  
 o/o/ 구조로 복사하면 안 되고, 반드시 o 폴더 내에서 build → o(자기 자신)으로 복사해야 합니다.
+---
+
+Q: 정적 빌드파일을 바로 자기자신의 root에 저장하여서 바로빌드되겐못함?
+
+A: CRA는 빌드 결과물을 항상 build 폴더에 생성하지만,  
+package.json에 "postbuild": "xcopy /E /I /Y build\\* ." 스크립트를 추가하면  
+o 폴더에서 npm run build만 실행해도  
+build 폴더의 모든 파일이 o 폴더(자기 자신)로 자동 복사되어  
+별도의 복사 명령 없이 바로 배포가 가능합니다.
