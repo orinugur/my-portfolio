@@ -1,0 +1,6 @@
+.bullet {
+  background: #ffeb3b;
+  border: 1px solid #fbc02d;
+  border-radius: 2px;
+  position: absolute;
+}

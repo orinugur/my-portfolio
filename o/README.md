@@ -181,3 +181,13 @@ package.json에 "postbuild": "xcopy /E /I /Y build\\* ." 스크립트를 추가�
 o 폴더에서 npm run build만 실행해도  
 build 폴더의 모든 파일이 o 폴더(자기 자신)로 자동 복사되어  
 별도의 복사 명령 없이 바로 배포가 가능합니다.
+---
+
+Q: spa가뭐임
+
+A: SPA(Single Page Application, 싱글 페이지 애플리케이션)는  
+페이지 이동 시 전체를 새로고침하지 않고,  
+필요한 부분만 동적으로 렌더링하는 웹앱 구조입니다.  
+React, Vue, Angular 등에서 많이 사용하며  
+초기 로딩 후에는 서버로부터 전체 HTML을 다시 받지 않고  
+자바스크립트로 화면을 빠르게 전환합니다.

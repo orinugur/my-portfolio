@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/my-portfolio123/ogu/static/css/main.88b01551.css",
+    "main.js": "/my-portfolio123/ogu/static/js/main.8cc06a2d.js",
+    "index.html": "/my-portfolio123/ogu/index.html",
+    "main.88b01551.css.map": "/my-portfolio123/ogu/static/css/main.88b01551.css.map",
+    "main.8cc06a2d.js.map": "/my-portfolio123/ogu/static/js/main.8cc06a2d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88b01551.css",
+    "static/js/main.8cc06a2d.js"
+  ]
+}
