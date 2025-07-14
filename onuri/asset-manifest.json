@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/my-portfolio123/onuri/static/css/main.e53844d9.css",
+    "main.js": "/my-portfolio123/onuri/static/js/main.c745dec5.js",
+    "index.html": "/my-portfolio123/onuri/index.html",
+    "main.e53844d9.css.map": "/my-portfolio123/onuri/static/css/main.e53844d9.css.map",
+    "main.c745dec5.js.map": "/my-portfolio123/onuri/static/js/main.c745dec5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e53844d9.css",
+    "static/js/main.c745dec5.js"
+  ]
+}
