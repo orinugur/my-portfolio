@@ -64,8 +64,10 @@ A:
 
 ---
 
-Q: 실제 배포 주소가 https://orinugur.github.io/my-portfolio123/1/ 인데, base 경로가 다르게 설정되어 있었습니다.
+Q: base: '/my-portfolio123/1/dist'로 해야 하는 것 아닌가요?
 
 A:  
-- vite.config.js의 base를 "/my-portfolio123/1/"로 정확히 맞추고, 다시 빌드 및 배포를 진행했습니다.
-- 이제 JS/CSS 번들이 올바른 경로로 로드되어, 깃허브 페이지에서 React 앱이 정상적으로 렌더링됩니다.
+- Vite의 base 옵션은 "배포되는 루트 URL 경로"를 의미하며, dist는 포함하지 않아야 합니다.
+- gh-pages는 dist 폴더의 내용을 실제 배포 주소(https://orinugur.github.io/my-portfolio123/1/)에 바로 올리므로, base는 '/my-portfolio123/1/'로 설정해야 JS/CSS 번들이 올바르게 로드됩니다.
+- base에 dist를 포함하면 실제 번들 경로가 https://orinugur.github.io/my-portfolio123/1/dist/assets/xxx.js처럼 생성되어 404 에러가 발생합니다.
+- 결론: base는 '/my-portfolio123/1/'로 설정하는 것이 맞습니다.
