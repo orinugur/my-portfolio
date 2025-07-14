@@ -140,3 +140,35 @@ README.md에 두 방식의 차이와 /docs 방식 적용법을 안내했습니�
 
 ※ 각 프로젝트별로 homepage와 복사 경로만 다르게 하면  
 여러 SPA를 하나의 리포지토리에서 독립적으로 배포할 수 있습니다.
+---
+
+## 하위폴더(o)에서 SPA를 정상적으로 배포하는 정확한 방법
+
+1. o 폴더의 `package.json`의 homepage를  
+   `"https://orinugur.github.io/my-portfolio123/o"`  
+   로 정확히 지정
+2. o 폴더에서  
+   ```
+   npm run build
+   ```
+3. o 폴더에서 build 폴더의 모든 파일을 o 폴더(자기 자신)에 복사  
+   ```
+   xcopy /E /I /Y build\* .
+   ```
+   (o 폴더 내에서 실행)
+4. git add o, commit, push
+5. https://orinugur.github.io/my-portfolio123/o/ 에서 정상적으로 SPA가 랜더링됨
+
+※ o/o/ 구조로 복사하면 안 되고, 반드시 o 폴더 내에서 build → o(자기 자신)으로 복사해야 합니다.
+
+---
+
+Q: 근데 이러면 루트가 https://orinugur.github.io/my-portfolio123/o/o 
+로해야 정상적으로 빌드가 가능한데
+https://orinugur.github.io/my-portfolio123/o
+로 빌드가 가능하겐안될까?
+
+A: o 폴더에서 homepage를 "https://orinugur.github.io/my-portfolio123/o"로 설정하고  
+npm run build 후 build 폴더의 모든 파일을 o 폴더(자기 자신)에 복사하면  
+https://orinugur.github.io/my-portfolio123/o/ 에서 정상적으로 SPA가 동작합니다.  
+o/o/ 구조로 복사하면 안 되고, 반드시 o 폴더 내에서 build → o(자기 자신)으로 복사해야 합니다.
