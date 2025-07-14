@@ -58,6 +58,14 @@ A:
 Q: 깃허브 페이지에서 여전히 "Vite + TS"만 보이고 앱이 렌더링되지 않습니다.
 
 A:  
-- vite.config.js의 base 경로가 `/my-portfolio123/1/`로 잘못되어 있어, 실제 배포 주소(`/my-portfolio123/`)에 맞게 수정했습니다.
+- vite.config.js의 base 경로를 실제 배포 주소(`/my-portfolio123/1/`)에 맞게 수정했습니다.
 - `npm run build`로 빌드 후, gh-pages 패키지를 설치하고, package.json에 `"deploy": "gh-pages -d dist"` 스크립트를 추가했습니다.
 - `npm run deploy`로 dist 폴더를 gh-pages 브랜치에 배포하여, 깃허브 페이지에서 React 앱이 정상적으로 렌더링되도록 처리했습니다.
+
+---
+
+Q: 실제 배포 주소가 https://orinugur.github.io/my-portfolio123/1/ 인데, base 경로가 다르게 설정되어 있었습니다.
+
+A:  
+- vite.config.js의 base를 "/my-portfolio123/1/"로 정확히 맞추고, 다시 빌드 및 배포를 진행했습니다.
+- 이제 JS/CSS 번들이 올바른 경로로 로드되어, 깃허브 페이지에서 React 앱이 정상적으로 렌더링됩니다.
