@@ -71,3 +71,12 @@ A:
 - gh-pages는 dist 폴더의 내용을 실제 배포 주소(https://orinugur.github.io/my-portfolio123/1/)에 바로 올리므로, base는 '/my-portfolio123/1/'로 설정해야 JS/CSS 번들이 올바르게 로드됩니다.
 - base에 dist를 포함하면 실제 번들 경로가 https://orinugur.github.io/my-portfolio123/1/dist/assets/xxx.js처럼 생성되어 404 에러가 발생합니다.
 - 결론: base는 '/my-portfolio123/1/'로 설정하는 것이 맞습니다.
+
+---
+
+Q: .gitignore에 dist가 있어서 빌드 파일이 안 올라가는 것 아닌가요?
+
+A:  
+- .gitignore에 dist가 있어도, gh-pages 배포(npm run deploy)는 dist 폴더의 파일을 별도의 gh-pages 브랜치에 직접 push하므로, 메인 브랜치에는 dist가 올라가지 않지만 배포에는 영향이 없습니다.
+- 즉, .gitignore에 dist가 있어도 gh-pages 배포에는 전혀 문제가 없습니다.
+- 만약 gh-pages 브랜치에도 파일이 없거나, 페이지가 비어 있다면 base 경로, 배포 브랜치 설정, 캐시, github pages 설정 등을 추가로 점검해야 합니다.
