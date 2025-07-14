@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "gh-pages": "^6.3.0",
     "typescript": "~5.8.3",
-    "vite": "^7.0.0",
-    "@vitejs/plugin-react": "^4.2.1"
+    "vite": "^7.0.0"
   },
   "dependencies": {
     "@types/react": "^19.1.8",
