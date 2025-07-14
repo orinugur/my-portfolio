@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
@@ -19,7 +19,7 @@ const TETROMINO_WIDTH = 4;
 const TETROMINO_HEIGHT = 1;
 
 function Tetris() {
-  const [board, setBoard] = useState<Cell[][]>(emptyBoard());
+  const [board] = useState<Cell[][]>(emptyBoard());
   const [pos, setPos] = useState({ x: 3, y: 0 });
 
   // 블록이 한 칸씩 아래로 내려감
