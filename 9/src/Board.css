@@ -1,0 +1,21 @@
+.Board {
+  display: grid;
+  grid-template-rows: repeat(20, 24px);
+  grid-template-columns: repeat(10, 24px);
+  background: #111;
+  border: 3px solid #444;
+  box-shadow: 0 0 12px #000a;
+  margin: 0 16px 0 0;
+}
+
+.Board.preview {
+  grid-template-rows: repeat(4, 24px);
+  grid-template-columns: repeat(4, 24px);
+  margin: 0;
+  border: 2px dashed #666;
+  background: #222;
+}
+
+.board-row {
+  display: contents;
+}

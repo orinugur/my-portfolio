@@ -1,0 +1,49 @@
+.board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.board {
+  display: grid;
+  background: #222;
+  border: 3px solid #0ff;
+  box-shadow: 0 0 16px #0ff8, 0 0 4px #0ff4;
+  margin-bottom: 16px;
+  outline: none;
+}
+
+.game-message {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(20, 20, 20, 0.95);
+  color: #fff;
+  border: 2px solid #0ff;
+  border-radius: 12px;
+  padding: 32px 48px;
+  font-size: 1.6rem;
+  z-index: 10;
+  text-align: center;
+  box-shadow: 0 0 24px #0ff8;
+}
+
+.game-message button {
+  margin-top: 18px;
+  padding: 8px 24px;
+  font-size: 1.1rem;
+  background: #0ff;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.game-message button:hover {
+  background: #fff;
+  color: #0ff;
+}

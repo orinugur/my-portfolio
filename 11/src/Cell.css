@@ -1,0 +1,53 @@
+.cell {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 1px solid #bdbdbd;
+  box-sizing: border-box;
+  background: #fff;
+  transition: background 0.1s;
+}
+
+.cell.ground {
+  background: #b97a56;
+}
+
+.cell.obstacle {
+  background: #f7b731;
+}
+
+.cell.mario {
+  background: #3498db;
+}
+
+.cell.enemy {
+  background: #e74c3c;
+}
+
+.cell.goal {
+  background: #fffbe6;
+}
+.bullet {
+  transition: font-size 0.1s;
+  z-index: 2;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.cell.mushroom {
+  background: #fffbe6;
+  border: 2px solid #e67e22;
+  box-shadow: 0 0 6px #f7b731;
+}
+.cell.powered {
+  border: 2px solid #f00;
+  box-shadow: 0 0 8px #f00;
+}
+.mario-powered {
+  filter: drop-shadow(0 0 4px #f00) brightness(1.2);
+}

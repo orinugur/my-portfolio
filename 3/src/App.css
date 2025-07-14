@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background: #181a20;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Segoe UI', 'Malgun Gothic', Arial, sans-serif;
+  padding-top: 32px;
+}
+
+.score-box {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  background: #23242a;
+  padding: 8px 24px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 2px 8px #0004;
+}
+
+.score {
+  font-weight: bold;
+  color: #ffe066;
+}
+
+.gameover-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.gameover-box {
+  background: #23242a;
+  border-radius: 12px;
+  padding: 32px 40px;
+  box-shadow: 0 4px 24px #000a;
+  text-align: center;
+}
+
+.gameover-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #ff5e5e;
+}
+
+.gameover-score {
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+}
+
+.restart-btn {
+  background: #ffe066;
+  color: #23242a;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.restart-btn:hover {
+  background: #ffd700;
+}
+
+.desc {
+  margin-top: 32px;
+  color: #aaa;
+  font-size: 1rem;
+}

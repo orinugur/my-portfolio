@@ -1,0 +1,29 @@
+.post {
+  padding: 20px 24px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafbfc;
+  transition: box-shadow 0.2s;
+}
+
+.post:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.post-title {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: #1a237e;
+}
+
+.post-meta {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.post-content {
+  font-size: 1.08rem;
+  color: #222;
+  line-height: 1.7;
+}

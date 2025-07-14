@@ -1,0 +1,17 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #87ceeb 0%, #fff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Noto Sans KR', Arial, sans-serif;
+}
+
+h1 {
+  margin-top: 32px;
+  font-size: 2.5rem;
+  color: #2d2d2d;
+  text-shadow: 2px 2px 0 #fff, 4px 4px 0 #f7b731;
+  letter-spacing: 2px;
+}

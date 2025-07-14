@@ -1,0 +1,32 @@
+.cell {
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  display: inline-block;
+  border: 1px solid #222;
+  background: #181818;
+  transition: background 0.1s;
+}
+
+.cell.player {
+  background: linear-gradient(135deg, #0ff 60%, #fff 100%);
+  border: 2px solid #0ff;
+  box-shadow: 0 0 8px #0ff8;
+}
+
+.cell.enemy {
+  background: linear-gradient(135deg, #f00 60%, #ff0 100%);
+  border: 2px solid #f00;
+  box-shadow: 0 0 8px #f008;
+}
+
+.cell.bullet {
+  background: #fff;
+  border: 1px solid #0ff;
+  box-shadow: 0 0 4px #fff8;
+}
+
+.cell.empty {
+  background: #181818;
+  border: 1px solid #222;
+}

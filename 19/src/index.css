@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #222;
+  color: #fff;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.App {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.score {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.game-over {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #ff5252;
+}

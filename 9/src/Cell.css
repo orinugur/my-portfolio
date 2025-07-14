@@ -1,0 +1,13 @@
+.Cell {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #222;
+  background: #222;
+  box-sizing: border-box;
+  transition: background 0.1s;
+}
+
+.Cell.filled {
+  border: 1px solid #fff8;
+  box-shadow: 0 0 4px #fff8;
+}

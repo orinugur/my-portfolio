@@ -1,0 +1,34 @@
+.benefit-section {
+  width: 100vw;
+  max-width: 1200px;
+  margin: 0 auto 32px auto;
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+  border-radius: 20px;
+  padding: 24px 0;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+.benefit__icon {
+  font-size: 1.5rem;
+  color: #0071e3;
+}
+
+@media (max-width: 900px) {
+  .benefit-section {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 16px 0;
+  }
+}

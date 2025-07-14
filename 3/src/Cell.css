@@ -1,0 +1,9 @@
+.Cell {
+  width: 28px;
+  height: 28px;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  border-radius: 4px;
+  transition: background 0.1s;
+}

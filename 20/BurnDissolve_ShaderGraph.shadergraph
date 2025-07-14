@@ -1,0 +1,125 @@
+{
+  "fileID": "ShaderGraph-1200",
+  "version": "12.1.0",
+  "type": "ShaderGraph",
+  "subGraph": false,
+  "path": "",
+  "properties": [
+    {
+      "referenceName": "_BurnAmount",
+      "displayName": "Burn Amount",
+      "type": "Float",
+      "defaultValue": 0,
+      "rangeValues": [0, 1],
+      "hidden": false
+    },
+    {
+      "referenceName": "_NoiseTex",
+      "displayName": "Noise Texture",
+      "type": "Texture2D",
+      "defaultValue": "white",
+      "hidden": false
+    },
+    {
+      "referenceName": "_EdgeColor",
+      "displayName": "Edge Color",
+      "type": "Color",
+      "defaultValue": [1, 0.5, 0, 1],
+      "hidden": false
+    },
+    {
+      "referenceName": "_EdgeWidth",
+      "displayName": "Edge Width",
+      "type": "Float",
+      "defaultValue": 0.08,
+      "rangeValues": [0, 0.2],
+      "hidden": false
+    },
+    {
+      "referenceName": "_BaseColor",
+      "displayName": "Base Color",
+      "type": "Color",
+      "defaultValue": [1, 1, 1, 1],
+      "hidden": false
+    }
+  ],
+  "nodes": [
+    {
+      "type": "SampleTexture2D",
+      "name": "NoiseSample",
+      "inputs": {
+        "Texture": "_NoiseTex",
+        "UV": "UV0"
+      },
+      "outputs": {
+        "RGBA": "NoiseRGBA",
+        "R": "NoiseR"
+      }
+    },
+    {
+      "type": "Subtract",
+      "inputs": {
+        "A": "NoiseR",
+        "B": "_BurnAmount"
+      },
+      "outputs": {
+        "Out": "DissolveValue"
+      }
+    },
+    {
+      "type": "Step",
+      "inputs": {
+        "Edge": 0,
+        "In": "DissolveValue"
+      },
+      "outputs": {
+        "Out": "AlphaClip"
+      }
+    },
+    {
+      "type": "Smoothstep",
+      "inputs": {
+        "Edge1": "_BurnAmount",
+        "Edge2": {
+          "type": "Add",
+          "inputs": {
+            "A": "_BurnAmount",
+            "B": "_EdgeWidth"
+          }
+        },
+        "In": "NoiseR"
+      },
+      "outputs": {
+        "Out": "EdgeMask"
+      }
+    },
+    {
+      "type": "Lerp",
+      "inputs": {
+        "A": "_BaseColor",
+        "B": "_EdgeColor",
+        "T": "EdgeMask"
+      },
+      "outputs": {
+        "Out": "FinalColor"
+      }
+    }
+  ],
+  "outputs": {
+    "BaseColor": "FinalColor",
+    "Alpha": "AlphaClip",
+    "AlphaClipThreshold": 0.01,
+    "Emission": {
+      "type": "Multiply",
+      "inputs": {
+        "A": "_EdgeColor",
+        "B": "EdgeMask"
+      }
+    }
+  },
+  "keywords": [],
+  "customEditor": "",
+  "preview": {
+    "enabled": true
+  }
+}

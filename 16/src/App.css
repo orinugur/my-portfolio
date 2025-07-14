@@ -1,0 +1,73 @@
+.App {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-family: 'Noto Sans KR', Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.video-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.video-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.video-form button {
+  padding: 8px 16px;
+  background: #e62117;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.video-form button:hover {
+  background: #b31217;
+}
+
+.comment-board {
+  margin-top: 16px;
+}
+
+.comment-cell {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #222;
+}
+
+.comment-text {
+  margin: 6px 0;
+  color: #333;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #888;
+}
+
+.error {
+  color: #e62117;
+  text-align: center;
+  margin: 16px 0;
+}

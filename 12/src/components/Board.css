@@ -1,0 +1,20 @@
+.board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.game-canvas {
+  border: 2px solid #444;
+  background: #111;
+  box-shadow: 0 0 16px #000;
+  outline: none;
+  cursor: crosshair;
+}
+
+.controls {
+  margin-top: 12px;
+  color: #bbb;
+  font-size: 1rem;
+}

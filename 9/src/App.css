@@ -1,0 +1,60 @@
+.App {
+  text-align: center;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  background: #181818;
+  border-radius: 8px;
+  padding: 16px 12px;
+  box-shadow: 0 0 8px #000a;
+}
+
+.next-block {
+  margin-bottom: 24px;
+}
+
+.score {
+  font-size: 1.2rem;
+  margin: 16px 0;
+}
+
+.game-over {
+  color: #ff4444;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+button {
+  background: #00bfff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #0099cc;
+}

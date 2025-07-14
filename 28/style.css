@@ -1,0 +1,44 @@
+body {
+  background: #222;
+  color: #fff;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  margin-top: 30px;
+  font-size: 2.2em;
+  letter-spacing: 2px;
+}
+canvas#tetris {
+  background: #111;
+  display: block;
+  margin: 20px auto;
+  border: 3px solid #444;
+  box-shadow: 0 0 20px #000a;
+}
+.info {
+  margin: 10px auto 0;
+  width: 240px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#score {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#restart {
+  background: #3af;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#restart:hover {
+  background: #08c;
+}

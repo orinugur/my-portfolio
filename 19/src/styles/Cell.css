@@ -1,0 +1,7 @@
+.cell {
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  display: inline-block;
+  transition: background 0.1s;
+}

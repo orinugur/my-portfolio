@@ -1,0 +1,16 @@
+.hud {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  color: #fff;
+  font-size: 1.2rem;
+  background: rgba(0,0,0,0.5);
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.hud-bar {
+  margin-bottom: 6px;
+}
