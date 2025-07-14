@@ -1,0 +1,31 @@
+.Board {
+  display: inline-block;
+  background: #111;
+  padding: 16px 24px 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px #000a;
+  margin: 24px auto;
+  min-width: 320px;
+}
+.Board-row {
+  display: flex;
+}
+.Board-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #fff;
+}
+.game-over {
+  color: #ff5252;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-left: 16px;
+  animation: blink 0.8s step-end infinite alternate;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  100% { opacity: 0.4; }
+}

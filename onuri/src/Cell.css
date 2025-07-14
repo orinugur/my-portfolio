@@ -1,0 +1,14 @@
+.Cell {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #333;
+  background: #222;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  transition: background 0.1s;
+}
+.Cell.filled {
+  background: #00eaff;
+  border-color: #00bcd4;
+}
