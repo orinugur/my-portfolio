@@ -92,3 +92,30 @@ A: package.json의 homepage를 "https://orinugur.github.io/my-portfolio123/o"로
 "predeploy", "deploy" 스크립트 추가 후  
 npm run deploy 명령어로 GitHub Pages에 실제 배포를 완료했습니다.  
 이제 https://orinugur.github.io/my-portfolio123/o/ 에서 테트리스가 정상적으로 동작합니다.
+Q: 이러면브랜치가달라지게되잖아 gh-pages로꼭해야해?
+
+A: gh-pages 방식은 별도 브랜치(gh-pages)에 정적 파일을 올려 배포합니다.  
+브랜치 분리를 원치 않으면,  
+1. CRA로 빌드(`npm run build`) 후  
+2. build 폴더 전체를 프로젝트의 /docs 폴더로 복사  
+3. GitHub Pages 설정에서 main 브랜치의 /docs 폴더를 배포 대상으로 지정  
+이렇게 하면 main 브랜치만으로도 배포가 가능합니다.  
+README.md에 두 방식의 차이와 /docs 방식 적용법을 안내했습니다.
+---
+
+## GitHub Pages 브랜치 분리 없이(main/docs 폴더) 배포하는 방법
+
+1. CRA로 빌드  
+   ```
+   npm run build
+   ```
+2. build 폴더 전체를 프로젝트의 docs 폴더로 복사  
+   ```
+   xcopy /E /I /Y build docs
+   ```
+   (윈도우 명령어, 맥/리눅스는 `cp -r build docs`)
+3. .gitignore에서 docs 제외(필요시)
+4. GitHub Pages 설정에서 main 브랜치의 /docs 폴더를 배포 대상으로 지정
+5. push 후 https://orinugur.github.io/my-portfolio123/o/ 에서 확인
+
+※ gh-pages 브랜치 없이 main/docs 폴더만으로도 배포가 가능합니다.
