@@ -1,0 +1,1 @@
+/* tradingview/lightweight-charts 기반으로 리팩토링됨. Chart.js 컴포넌트는 더 이상 사용되지 않습니다. */

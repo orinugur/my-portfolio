@@ -1,0 +1,124 @@
+body {
+  background: #111;
+  color: #eee;
+  font-family: 'Noto Sans KR', Arial, sans-serif;
+  margin: 0;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #111;
+}
+
+header {
+  background: #181818;
+  color: #fff;
+  padding: 2rem 0 1.2rem 0;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #222;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 1rem 0;
+}
+
+.coin-select-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.coin-btn {
+  background: #222;
+  color: #eee;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+.coin-btn.active,
+.coin-btn:hover {
+  background: #ffb300;
+  color: #111;
+}
+
+.chart-container {
+  background: #181818;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  padding: 2rem 1rem 1.5rem 1rem;
+  min-width: 320px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto 2rem auto;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.summary-container {
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  padding: 1.2rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.summary-label {
+  color: #bbb;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.summary-value {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.summary-up {
+  color: #00e676;
+}
+.summary-down {
+  color: #ff5252;
+}
+
+footer {
+  background: #181818;
+  color: #888;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1rem;
+  margin-top: auto;
+}
+
+@media (max-width: 600px) {
+  .chart-container, .summary-container {
+    padding: 1rem 0.3rem;
+    min-width: 0;
+    max-width: 100vw;
+    font-size: 0.95rem;
+  }
+  header {
+    font-size: 1.2rem;
+    padding: 1.2rem 0 0.7rem 0;
+  }
+}

@@ -1,0 +1,21 @@
+# .github/workflows/update-pages.yml
+name: 자동으로 링크 목록 생성
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  make-link-list:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 폴더 목록을 URL로 만들기
+        run: |
+          ls project | jq -R -s -c 'split("\n") | map(select(length > 0)) | map("https://username.github.io/project/"+.)' > urls.json
+
+      - name: 결과 확인
+        run: cat urls.json
