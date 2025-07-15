@@ -1,5 +1,5 @@
 # .github/workflows/update-pages.yml
-name: 숫자 폴더 자동 URL 수집
+name: 폴더 자동 URL 수집후 post
 
 on:
   push:
