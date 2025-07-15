@@ -18,8 +18,10 @@ jobs:
           find . -maxdepth 1 -type d \
           | grep -E './[0-9]+$' \
           | sed 's|^\./||' \
-          | jq -R -s -c 'split("\n") | map(select(length > 0)) | map("https://username.github.io/my-portfolio123/"+.)' \
+          | jq -R -s -c 'split("\n") | map(select(length > 0)) | map("https://orinugur.github.io/my-portfolio123/"+.)' \
           > urls.json
 
       - name: 결과 확인
         run: cat urls.json
+      
+        
