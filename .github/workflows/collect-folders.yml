@@ -13,15 +13,38 @@ jobs:
       - name: 코드 체크아웃
         uses: actions/checkout@v3
 
-      - name: 숫자 폴더만 URL로 만들기
+      - name: 새로 추가된 root 폴더만 추출 (모든 폴더)
+        id: newfolders
         run: |
-          find . -maxdepth 1 -type d \
-          | grep -E './[0-9]+$' \
-          | sed 's|^\./||' \
+          git fetch origin ${{ github.event.before }}
+          git diff --name-status ${{ github.event.before }} ${{ github.sha }} \
+          | awk '$1 == "A" && $2 !~ /\// {print $2}' \
+          > newfolders.txt
+
+      - name: 새로 추가된 폴더명 URL로 만들기 (배열)
+        if: success()
+        run: |
+          cat newfolders.txt \
           | jq -R -s -c 'split("\n") | map(select(length > 0)) | map("https://orinugur.github.io/my-portfolio123/"+.)' \
           > urls.json
 
-      - name: 결과 확인
+      - name: 결과 확인 (배열)
         run: cat urls.json
+
+      - name: 새 폴더명들 API로 POST (배열)
+        if: success()
+        run: |
+          urls=$(cat urls.json | jq -c '.')
+          curl -X POST -H "Content-Type: application/json" -d "{\"urls\":$urls}" https://orinuguri.com
+
+      - name: 새 폴더명별로 개별 POST (각각)
+        if: success()
+        run: |
+          while read folder; do
+            if [ -n "$folder" ]; then
+              url="https://orinugur.github.io/my-portfolio123/$folder"
+              curl -X POST -H "Content-Type: application/json" -d "{\"url\":\"$url\"}" https://orinuguri.com
+            fi
+          done < newfolders.txt
       
         
