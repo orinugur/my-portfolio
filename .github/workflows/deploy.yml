@@ -1,4 +1,4 @@
-name: Deploy All Projects
+name: Deploy Changed Projects
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,18 +20,19 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      - name: Deploy all folders
+      - name: Get changed directories
+        id: changed-dirs
         run: |
-          cd $GITHUB_WORKSPACE
-          for dir in */; do
-            if [ -f "$dir/package.json" ]; then
-              echo "Deploying $dir"
-              cd "$dir"
-              npm install
-              npm run build
-              npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd . --yes
-              cd ..
-            else
-              echo "Skipping $dir (no package.json)"
-            fi
+          echo "dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^team' | cut -d/ -f1 | sort -u | xargs)" >> $GITHUB_OUTPUT
+
+      - name: Deploy only changed folders
+        if: steps.changed-dirs.outputs.dirs != ''
+        run: |
+          for dir in ${{ steps.changed-dirs.outputs.dirs }}; do
+            echo "Deploying $dir"
+            cd "$dir"
+            npm install
+            npm run build
+            npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd . --yes
+            cd ..
           done

@@ -1,0 +1,14 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  font-family: 'Segoe UI', '맑은 고딕', Arial, sans-serif;
+  background: #f7f7f7;
+  min-height: 100vh;
+}
+
+.app-container h1 {
+  margin-bottom: 24px;
+  color: #333;
+}
