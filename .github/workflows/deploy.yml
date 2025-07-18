@@ -1,20 +1,36 @@
-name: Deploy all teams to Vercel
+name: Deploy All Projects
 
 on:
   push:
     branches: [main]
 
 jobs:
-  deploy-team1:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: cd team1 && npm install && npm run build
-      - run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd team1
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  deploy-team2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: cd team2 && npm install && npm run build
-      - run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd team2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy all folders
+        run: |
+          cd $GITHUB_WORKSPACE
+          for dir in */; do
+            if [ -f "$dir/package.json" ]; then
+              echo "Deploying $dir"
+              cd "$dir"
+              npm install
+              npm run build
+              npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd . --yes
+              cd ..
+            else
+              echo "Skipping $dir (no package.json)"
+            fi
+          done
