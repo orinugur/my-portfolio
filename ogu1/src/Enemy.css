@@ -1,0 +1,6 @@
+.enemy {
+  background: #e53935;
+  border: 2px solid #b71c1c;
+  border-radius: 0 0 6px 6px;
+  position: absolute;
+}

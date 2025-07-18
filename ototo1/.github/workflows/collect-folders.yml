@@ -1,0 +1,25 @@
+# .github/workflows/update-pages.yml
+name: 숫자 폴더 자동 URL 수집
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  collect-urls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 숫자 폴더만 URL로 만들기
+        run: |
+          find . -maxdepth 1 -type d \
+          | grep -E './[0-9]+$' \
+          | sed 's|^\./||' \
+          | jq -R -s -c 'split("\n") | map(select(length > 0)) | map("https://username.github.io/my-portfolio123/"+.)' \
+          > urls.json
+
+      - name: 결과 확인
+        run: cat urls.json
