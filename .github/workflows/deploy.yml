@@ -1,0 +1,20 @@
+name: Deploy all teams to Vercel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-team1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd team1 && npm install && npm run build
+      - run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd team1
+
+  deploy-team2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd team2 && npm install && npm run build
+      - run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --cwd team2
