@@ -31,7 +31,7 @@ jobs:
           RESPONSE=$(curl -s -X POST '${{ secrets.API_URL }}' \
             -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"model\": \"gpt-4o\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
+            -d "{\"model\": \"ivy-4-mm\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
           echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
 
       # 4. 리뷰 결과 디버깅(선택)
