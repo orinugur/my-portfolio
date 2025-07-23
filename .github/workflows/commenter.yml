@@ -25,10 +25,10 @@ jobs:
       - name: Request AI Review
         run: |
           PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
-          RESPONSE=$(curl -s -X POST '${{ secrets.API_URL }}' \
+          RESPONSE=$(curl -s -X POST "https://test.backend.clevi.net/api/services/v1/aiservice/openai/v1/chat/completions" \
             -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
+            -d "{\"model\": \"1vy-4-mm\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
           echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
 
       - name: Post Review Comment
