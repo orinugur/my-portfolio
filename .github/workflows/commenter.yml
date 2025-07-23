@@ -1,44 +1,48 @@
 name: AI Code Review
+
 on:
   pull_request:
-    types: [opened, synchronize] # PR이 열리거나 새로운 커밋이 푸시될 때 실행
+    types: [opened, synchronize]
 
-    # 권한 명시적으로 부여
-permissions:
-  pull-requests: write
-  contents: read
-  
 jobs:
   review:
     runs-on: ubuntu-latest
+
     steps:
-      # 1. 소스 코드를 가져옵니다.
+      # 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # 모든 히스토리를 가져와야 diff 비교가 가능합니다.
+          fetch-depth: 0
 
-      # 2. PR의 변경사항(diff)을 파일로 저장합니다.
+      # 2. PR diff 추출
       - name: Get PR diff
         run: |
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > pr.diff
 
-      # 3. AI API를 호출하여 리뷰를 요청하고 결과를 파일로 저장합니다.
+      # 3. AI API 호출 및 리뷰 결과 저장
       - name: Request AI Review
         run: |
-            PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
-    
-            curl -X POST '${{ secrets.API_URL }}' \
+          PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
+          RESPONSE=$(curl -s -X POST '${{ secrets.API_URL }}' \
             -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"model\": \"ivy-4-mm\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}]}" \
-            | jq -r '.choices[0].message.content' > review_comment.txt
-      # 4. Gitea API를 통해 PR에 리뷰 댓글을 작성합니다.
+            -d "{\"model\": \"gpt-4o\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
+
+      # 4. 리뷰 결과 디버깅(선택)
+      - name: Debug review_comment.txt
+        run: |
+          echo "==== review_comment.txt 내용 ===="
+          cat review_comment.txt
+          echo "==== 끝 ===="
+
+      # 5. PR에 코멘트 등록
       - name: Post Review Comment
         run: |
-          COMMENT_BODY=$(cat review_comment.txt)
-          curl -X POST \
+          COMMENT_BODY=$(cat review_comment.txt | jq -Rs .)
+          curl -s -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{\"body\": ${COMMENT_BODY}}" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+            "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
