@@ -13,40 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. PR diff 추출
       - name: Get PR diff
         run: |
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > pr.diff
 
-      # 3. AI API 호출 및 리뷰 결과 저장
       - name: Request AI Review
         run: |
           PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
-          RESPONSE=$(curl -s -X POST '${{ secrets.API_URL }}' \
+          RESPONSE=$(curl -s -X POST "https://test.backend.clevi.net/api/services/v1/aiservice/openai/v1/chat/completions" \
             -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"model\": \"gpt-4o\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
+            -d "{\"model\": \"1vy-4-mm\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
           echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
 
-      # 4. 리뷰 결과 디버깅(선택)
-      - name: Debug review_comment.txt
-        run: |
-          echo "==== review_comment.txt 내용 ===="
-          cat review_comment.txt
-          echo "==== 끝 ===="
-
-      # 5. PR에 코멘트 등록
       - name: Post Review Comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          COMMENT_BODY=$(cat review_comment.txt | jq -Rs .)
+          COMMENT_BODY=$(jq -Rs . < review_comment.txt)
+          PR_NUMBER=${{ github.event.pull_request.number }}
           curl -s -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"body\": ${COMMENT_BODY}}" \
-            "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+            "https://api.github.com/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments"
