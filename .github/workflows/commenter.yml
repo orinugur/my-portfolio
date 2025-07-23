@@ -1,17 +1,24 @@
 name: AI Code Review
+
 on:
   pull_request:
-    types: [opened, synchronize] # PR이 열리거나 새로운 커밋이 푸시될 때 실행
+    types: [opened, synchronize] # PR이 열리거나 커밋이 푸시될 때 실행
+
+# 권한 명시적으로 부여
+permissions:
+  pull-requests: write
+  contents: read
 
 jobs:
   review:
     runs-on: ubuntu-latest
+
     steps:
       # 1. 소스 코드를 가져옵니다.
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # 모든 히스토리를 가져와야 diff 비교가 가능합니다.
+          fetch-depth: 0 # 전체 히스토리를 가져와야 정확한 diff 계산 가능
 
       # 2. PR의 변경사항(diff)을 파일로 저장합니다.
       - name: Get PR diff
@@ -21,22 +28,21 @@ jobs:
       # 3. AI API를 호출하여 리뷰를 요청하고 결과를 파일로 저장합니다.
       - name: Request AI Review
         run: |
-          # AI에게 보낼 프롬프트를 구성합니다.
           PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
-          
-          # curl을 사용해 AI API 호출 (여기는 사용하는 AI 서비스에 맞게 수정 필요)
+
+          # AI API 호출 (사용 중인 API에 맞게 수정 필요)
           curl -X POST '${{ secrets.API_URL }}' \
             -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"${PROMPT}\", \"model\":ivy-4-mm \"text-davinci-003\"}" \
-            | jq -r '.choices[0].text' > review_comment.txt # 응답에서 리뷰 텍스트만 추출
+            -d "{\"prompt\": \"${PROMPT}\", \"model\": \"text-davinci-003\"}" \
+            | jq -r '.choices[0].text' > review_comment.txt
 
-      # 4. Gitea API를 통해 PR에 리뷰 댓글을 작성합니다.
+      # 4. 리뷰 결과를 GitHub PR에 코멘트로 등록합니다.
       - name: Post Review Comment
         run: |
-          COMMENT_BODY=$(cat review_comment.txt)
+          COMMENT_BODY=$(cat review_comment.txt | jq -Rs .) # JSON-safe string
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d "{\"body\": \"🤖 AI 코드 리뷰:\n\n${COMMENT_BODY}\"}" \
-            "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.issue.number }}/comments"
+            -d "{\"body\": ${COMMENT_BODY}}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
