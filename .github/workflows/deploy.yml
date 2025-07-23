@@ -45,4 +45,3 @@ jobs:
               echo "No package.json in $dir, skipping."
             fi
             cd ..
-          done
