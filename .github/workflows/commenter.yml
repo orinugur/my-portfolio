@@ -1,52 +1,69 @@
-name: AI Code Review
+name: AI 코드리뷰 자동화
 
 on:
   pull_request:
-    types: [opened, synchronize]
-
-permissions:
-  issues: write    # 이슈/PR 코멘트 작성 권한
-  pull-requests: write # (추가적으로 필요할 수 있음)
+    types: [opened, synchronize, reopened]
 
 jobs:
-  review:
+  ai_code_review:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 체크아웃
       - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v4
 
-      # 2. PR diff 추출
       - name: Get PR diff
         run: |
-          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > pr.diff
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...HEAD > pr.diff
 
-      # 3. AI API 호출 및 리뷰 결과 저장
-      - name: Request AI Review
+      - name: AI 코드리뷰 요청 및 결과 저장
+        env:
+          API_KEY: ${{ secrets.YOUR_AI_API_KEY }}
         run: |
-          PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘. \n\n\`\`\`diff\n$(cat pr.diff)\n\`\`\`"
-          RESPONSE=$(curl -s -X POST '${{ secrets.API_URL }}' \
-            -H "Authorization: Bearer ${{ secrets.AI_API_KEY }}" \
+          PROMPT="다음 코드 변경사항을 리뷰하고, 잠재적인 버그나 개선점에 대해 설명해줘.
+
+            \`\`\`diff
+            $(cat pr.diff)
+            \`\`\`"
+
+          # AI API 호출 (예시: OpenAI 호환 API)
+          RESPONSE=$(curl -s -X POST 'https://test.backend.clevi.net/api/services/v1/aiservice/openai/v1/chat/completions' \
+            -H "Authorization: Bearer $API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"model\": \"ivy-4-mm\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
-          echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
+            -d "{\"model\": \"gpt-4o\", \"messages\": [{\"role\": \"user\", \"content\": \"${PROMPT}\"}], \"max_tokens\": 1024, \"temperature\": 0.2}")
 
-      # 4. 리뷰 결과 디버깅(선택)
-      - name: Debug review_comment.txt
-        run: |
-          echo "==== review_comment.txt 내용 ===="
-          cat review_comment.txt
-          echo "==== 끝 ===="
+          echo "==== AI API 원본 응답(JSON) ===="
+          echo "$RESPONSE"
+          echo "==== END ===="
 
-      # 5. PR에 코멘트 등록
-      - name: Post Review Comment
+          # 응답 전체를 파일로 저장 (진단용)
+          echo "$RESPONSE" > response_raw.txt
+
+          # JSON에서 리뷰 텍스트만 추출해서 txt로 저장
+          REVIEW=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+
+          # 만약 추출 결과가 없거나 null이면 코멘트 등록 건너뜀
+          if [ -z "$REVIEW" ] || [ "$REVIEW" = "null" ]; then
+            echo "AI 응답이 없거나 파싱 실패. 코멘트 등록을 건너뜁니다."
+            exit 0
+          fi
+
+          echo "$REVIEW" > review_comment.txt
+
+      - name: PR에 코드리뷰 코멘트 등록
+        if: success() && hashFiles('review_comment.txt') != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           COMMENT_BODY=$(cat review_comment.txt | jq -Rs .)
           curl -s -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"body\": ${COMMENT_BODY}}" \
-            "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+
+      - name: 참고 안내 (문제 원인 설명)
+        run: |
+          echo "⚠️ 참고: AI API 응답이 JSON인데 txt로 저장해서 문제가 되는 게 아니라, 응답이 없거나 구조가 달라서 파싱이 안 되는 것이 핵심입니다."
+          echo "응답 전체는 response_raw.txt에서 확인하세요."
