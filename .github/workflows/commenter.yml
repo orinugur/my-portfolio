@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+permissions:
+  issues: write    # 이슈/PR 코멘트 작성 권한
+  pull-requests: write # (추가적으로 필요할 수 있음)
+
 jobs:
   review:
     runs-on: ubuntu-latest
