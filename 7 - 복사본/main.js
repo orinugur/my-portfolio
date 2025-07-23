@@ -57,10 +57,18 @@ const SHAPES = [
 let board = createBoard();
 let current, next, score = 0, gameOver = false, dropInterval = 500, dropTimer = 0;
 
+/**
+ * Creates and returns a new empty Tetris board as a 2D array.
+ * @return {number[][]} A 20x10 array filled with zeros representing an empty game board.
+ */
 function createBoard() {
   return Array.from({length: ROWS}, () => Array(COLS).fill(0));
 }
 
+/**
+ * Draws a single Tetris block at the specified board coordinates with the given color.
+ * Skips drawing if the color ID is falsy.
+ */
 function drawBlock(x, y, colorId) {
   if (!colorId) return;
   ctx.fillStyle = COLORS[colorId];
@@ -69,6 +77,9 @@ function drawBlock(x, y, colorId) {
   ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 }
 
+/**
+ * Renders the entire game board and the current falling Tetris piece onto the canvas.
+ */
 function drawBoard() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // 보드
@@ -89,6 +100,10 @@ function drawBoard() {
   }
 }
 
+/**
+ * Generates a new random Tetris piece with its initial position and shape.
+ * @return {Object} An object representing the new piece, including its position (`x`, `y`), shape matrix, and type ID.
+ */
 function randomPiece() {
   const typeId = Math.floor(Math.random() * (SHAPES.length - 1)) + 1;
   const shape = SHAPES[typeId].map(row => row.slice());
@@ -100,6 +115,12 @@ function randomPiece() {
   };
 }
 
+/**
+ * Determines whether the given Tetris piece collides with the board boundaries or existing blocks.
+ * @param {number[][]} board - The current game board grid.
+ * @param {Object} piece - The Tetris piece with position and shape.
+ * @return {boolean} True if the piece would collide; otherwise, false.
+ */
 function collide(board, piece) {
   for (let y = 0; y < piece.shape.length; y++) {
     for (let x = 0; x < piece.shape[y].length; x++) {
@@ -114,6 +135,11 @@ function collide(board, piece) {
   return false;
 }
 
+/**
+ * Integrates the current piece's blocks into the game board at its position, solidifying it in place.
+ * 
+ * Updates the board array by setting cells occupied by the piece to the piece's type ID.
+ */
 function merge(board, piece) {
   for (let y = 0; y < piece.shape.length; y++) {
     for (let x = 0; x < piece.shape[y].length; x++) {
@@ -126,11 +152,19 @@ function merge(board, piece) {
   }
 }
 
+/**
+ * Returns a new matrix representing the input matrix rotated 90 degrees clockwise.
+ * @param {number[][]} matrix - The matrix to rotate.
+ * @return {number[][]} The rotated matrix.
+ */
 function rotate(matrix) {
   // 시계방향 회전
   return matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
 }
 
+/**
+ * Moves the current Tetris piece down by one row, merging it into the board if it collides, clearing completed lines, and spawning a new piece. Sets the game over state if a new piece cannot be placed.
+ */
 function playerDrop() {
   current.y++;
   if (collide(board, current)) {
@@ -146,6 +180,11 @@ function playerDrop() {
   dropTimer = 0;
 }
 
+/**
+ * Clears completed lines from the board, updates the score, and increases game speed.
+ *
+ * Checks each row for completion, removes full rows, inserts empty rows at the top, increments the score based on the number of lines cleared, updates the score display, and decreases the drop interval to speed up gameplay.
+ */
 function sweep() {
   let lines = 0;
   outer: for (let y = ROWS - 1; y >= 0; y--) {
@@ -164,16 +203,26 @@ function sweep() {
   }
 }
 
+/**
+ * Sets the current falling piece to the next piece and generates a new next piece.
+ */
 function spawn() {
   current = next || randomPiece();
   next = randomPiece();
 }
 
+/**
+ * Moves the current Tetris piece horizontally by the specified direction, if possible.
+ * @param {number} dir - The direction to move the piece: -1 for left, 1 for right.
+ */
 function playerMove(dir) {
   current.x += dir;
   if (collide(board, current)) current.x -= dir;
 }
 
+/**
+ * Rotates the current Tetris piece clockwise, applying wall kick logic to adjust its position if a collision occurs after rotation.
+ */
 function playerRotate() {
   const oldShape = current.shape;
   current.shape = rotate(current.shape);
@@ -190,6 +239,11 @@ function playerRotate() {
   }
 }
 
+/**
+ * Resets the game state to start a new Tetris game.
+ *
+ * Clears the board, resets the score and drop interval, sets the game as active, updates the score display, and spawns the first piece.
+ */
 function restart() {
   board = createBoard();
   score = 0;
@@ -213,6 +267,13 @@ document.getElementById('restart').onclick = () => {
   drawBoard();
 };
 
+/**
+ * Main game loop that updates the Tetris game state and renders the board.
+ * 
+ * Advances the drop timer, automatically drops the current piece when needed, redraws the board, and schedules the next frame if the game is not over.
+ * 
+ * @param {number} [time=0] - The current timestamp, provided by requestAnimationFrame.
+ */
 function update(time = 0) {
   if (!gameOver) {
     dropTimer += 16;
