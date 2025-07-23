@@ -36,7 +36,7 @@ jobs:
         run: |
           COMMENT_BODY=$(cat review_comment.txt)
           curl -X POST \
-            -H "Authorization: token ${{ secrets.GITEA_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{\"body\": \"🤖 AI 코드 리뷰:\n\n${COMMENT_BODY}\"}" \
             "${{ github.api_url }}/repos/${{ github.repository }}/issues/${{ github.issue.number }}/comments"
