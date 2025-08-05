@@ -58,6 +58,12 @@ const SHAPES = [
 let board = createMatrix(COLS, ROWS);
 let current, next, pos, score = 0, dropInterval = 600, dropTimer = null, gameOver = false;
 
+/**
+ * Creates a 2D array (matrix) of the specified width and height filled with zeros.
+ * @param {number} w - The number of columns in the matrix.
+ * @param {number} h - The number of rows in the matrix.
+ * @return {number[][]} A matrix representing an empty game board.
+ */
 function createMatrix(w, h) {
   const matrix = [];
   for (let i = 0; i < h; i++) {
@@ -66,6 +72,12 @@ function createMatrix(w, h) {
   return matrix;
 }
 
+/**
+ * Draws a single Tetris block at the specified grid coordinates with the given color.
+ * @param {number} x - The horizontal grid position of the block.
+ * @param {number} y - The vertical grid position of the block.
+ * @param {string} color - The fill color for the block.
+ */
 function drawBlock(x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -73,6 +85,9 @@ function drawBlock(x, y, color) {
   ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 }
 
+/**
+ * Renders the entire game board and the current falling piece on the canvas.
+ */
 function drawBoard() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // 보드
@@ -95,6 +110,13 @@ function drawBoard() {
   }
 }
 
+/**
+ * Determines whether a Tetris piece at a given position collides with the board or existing blocks.
+ * @param {number[][]} matrix - The game board matrix.
+ * @param {number[][]} piece - The matrix representing the Tetris piece.
+ * @param {{x: number, y: number}} offset - The position on the board to check for collision.
+ * @return {boolean} True if the piece collides with the board boundaries or occupied cells; otherwise, false.
+ */
 function collide(matrix, piece, offset) {
   for (let y = 0; y < piece.length; y++) {
     for (let x = 0; x < piece[y].length; x++) {
@@ -108,6 +130,11 @@ function collide(matrix, piece, offset) {
   return false;
 }
 
+/**
+ * Integrates a Tetris piece into the game board matrix at the specified position.
+ * 
+ * Copies all non-empty cells from the piece into the corresponding locations on the board, effectively placing the piece onto the board.
+ */
 function merge(matrix, piece, offset) {
   for (let y = 0; y < piece.length; y++) {
     for (let x = 0; x < piece[y].length; x++) {
@@ -118,11 +145,19 @@ function merge(matrix, piece, offset) {
   }
 }
 
+/**
+ * Returns a new matrix representing the input matrix rotated 90 degrees clockwise.
+ * @param {number[][]} matrix - The matrix to rotate.
+ * @return {number[][]} The rotated matrix.
+ */
 function rotate(matrix) {
   // 시계방향 회전
   return matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
 }
 
+/**
+ * Moves the current Tetris piece down by one row, handling collision, merging, line clearing, and game over logic.
+ */
 function playerDrop() {
   pos.y++;
   if (collide(board, current, pos)) {
@@ -139,6 +174,10 @@ function playerDrop() {
   drawBoard();
 }
 
+/**
+ * Moves the current Tetris piece horizontally by the specified direction if possible.
+ * @param {number} dir - The direction to move the piece: -1 for left, 1 for right.
+ */
 function playerMove(dir) {
   pos.x += dir;
   if (collide(board, current, pos)) {
@@ -147,6 +186,10 @@ function playerMove(dir) {
   drawBoard();
 }
 
+/**
+ * Rotates the current falling Tetris piece clockwise if possible.
+ * If rotation would cause a collision, the piece remains in its original orientation. Updates the board display after attempting rotation.
+ */
 function playerRotate() {
   const old = current;
   current = rotate(current);
@@ -156,6 +199,9 @@ function playerRotate() {
   drawBoard();
 }
 
+/**
+ * Clears completed lines from the board, updates the score, increases game speed, and restarts the drop timer.
+ */
 function sweep() {
   let lines = 0;
   outer: for (let y = ROWS - 1; y >= 0; y--) {
@@ -175,6 +221,9 @@ function sweep() {
   }
 }
 
+/**
+ * Sets the current falling Tetris piece to the next piece or a new random piece, positions it at the top center of the board, and selects the next piece type.
+ */
 function resetPiece() {
   const typeId = next || (Math.random() * (SHAPES.length - 1) + 1) | 0;
   current = SHAPES[typeId].map(row => row.slice());
@@ -182,11 +231,19 @@ function resetPiece() {
   next = (Math.random() * (SHAPES.length - 1) + 1) | 0;
 }
 
+/**
+ * Resets the automatic piece drop timer based on the current drop interval.
+ */
 function restartDropTimer() {
   clearInterval(dropTimer);
   dropTimer = setInterval(playerDrop, dropInterval);
 }
 
+/**
+ * Initializes and starts a new Tetris game session.
+ *
+ * Resets the game board, score, drop interval, and game state, updates the score display, sets the current piece, redraws the board, and starts the automatic piece drop timer.
+ */
 function startGame() {
   board = createMatrix(COLS, ROWS);
   score = 0;
